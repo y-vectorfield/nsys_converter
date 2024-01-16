@@ -12,7 +12,10 @@ class NsysConverter:
         self.file_path = Path(file_path)
         self.sheet_name = sheet_name
         self.save_file_name = save_file_name
-        self.new_sheet_name = new_sheet_name
+        if new_sheet_name is None:
+            self.new_sheet_name = self.save_file_name
+        else:
+            self.new_sheet_name = new_sheet_name
 
     def convert(self, column_name: str) -> None:
         try:
@@ -39,6 +42,7 @@ class NsysConverter:
                 f'{self.save_file_name}{self.file_path.suffix}'
         else:
             save_path = f'{self.file_path.stem}_edited{self.file_path.suffix}'
+
         file.to_excel(save_path, index=False, sheet_name=self.new_sheet_name)
 
     def _convert_num(self, data: str) -> float:
@@ -68,7 +72,7 @@ if __name__ == '__main__':
     parser.add_argument('--save_file_name', type=str,
                         default=None, help='File name for edited sheet')
     parser.add_argument('--new_sheet_name', type=str,
-                        default='Sheet1', help='Sheet name for edited sheet')
+                        default=None, help='Sheet name for edited sheet')
     args = parser.parse_args()
     nc = NsysConverter(args.file_path, args.sheet_name,
                        args.save_file_name, args.new_sheet_name)
