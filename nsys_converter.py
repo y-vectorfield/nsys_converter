@@ -34,7 +34,7 @@ class NsysConverter:
         # 分かりにくいColumn名を変更
         file = file.rename(columns={'Time': 'Time Rate'})
         # 削除対象のColumnを削除
-        file = file.drop(DROP_COLUMNS, axis=1)
+        file = file.drop(DROP_COLUMNS, axis=1, errors='ignore')
 
         if self.save_file_name is not None:
             # 指定のファイル名でファイルパスを構築
